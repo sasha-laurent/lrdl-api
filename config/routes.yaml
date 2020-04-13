@@ -1,3 +1,5 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /test
+    controller: App\Controller\ApiController::test
+imports:
+    resource: routes/nelmio_api_doc.yaml

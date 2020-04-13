@@ -6,4 +6,8 @@
 /public/bundles/
 /var/
 /vendor/
-###< symfony/framework-bundle ###
+/nbproject/*
+/nbproject
+/.idea
+/.idea/*
+
