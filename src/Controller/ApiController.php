@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Factory\RecipeFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Recipe;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,14 +56,25 @@ class ApiController extends AbstractController {
      * @SWG\Tag(name="recipe")
      * @return JsonResponse
      */
-    public function postRecipe(Request $request, EntityManagerInterface $em, SerializerInterface $serializer) {
-        /** @var Recipe $recipe */
-        $recipe = $serializer->deserialize($request->getContent(), Recipe::class, 'json');
+    public function postRecipe(Request $request, EntityManagerInterface $em, SerializerInterface $serializer, LoggerInterface $logger) {
+        /** @var UploadedFile $image */
+        $image = $request->files->get('image');
+
+        $imageFilename = $this->renameImage($image);
+
+        $recipe = RecipeFactory::create($request->request->all(), $imageFilename);
+
+        $image->move($this->getParameter('images_dir'), $imageFilename);
 
         $em->persist($recipe);
         $em->flush();
         $em->refresh($recipe);
 
         return new JsonResponse($recipe->getId());
+    }
+
+    private function renameImage(UploadedFile $image): string
+    {
+        return 'recipe-'.date_format(new \DateTime(), 'YmdHis').'-'.rand(0, 1000000).'.'.strtolower($image->getClientOriginalExtension());
     }
 }

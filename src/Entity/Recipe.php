@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
@@ -32,6 +33,11 @@ class Recipe
      * @ORM\Column(type="string", length=500)
      */
     private $description;
+
+    /**
+     * @ORM\Column(type="string", length=500)
+     */
+    private $imageFilename;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ingredient", mappedBy="recipe")
@@ -80,6 +86,18 @@ class Recipe
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImageFilename(): string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(string $imageFilename): self
+    {
+        $this->imageFilename = $imageFilename;
 
         return $this;
     }
