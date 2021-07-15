@@ -70,7 +70,7 @@ class ApiController extends AbstractController {
         $em->flush();
         $em->refresh($recipe);
 
-        return new JsonResponse($recipe->getId());
+        return new JsonResponse($serializer->serialize($recipe, 'json'), Response::HTTP_CREATED, [], true);
     }
 
     private function renameImage(UploadedFile $image): string

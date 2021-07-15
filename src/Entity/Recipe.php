@@ -90,12 +90,12 @@ class Recipe
         return $this;
     }
 
-    public function getImageFilename(): string
+    public function getImageFilename(): ?string
     {
         return $this->imageFilename;
     }
 
-    public function setImageFilename(string $imageFilename): self
+    public function setImageFilename(?string $imageFilename): self
     {
         $this->imageFilename = $imageFilename;
 
