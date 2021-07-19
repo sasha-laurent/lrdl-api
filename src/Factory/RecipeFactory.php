@@ -17,4 +17,13 @@ class RecipeFactory
             ->setQuantity($requestParams['quantity'])
             ->setImageFilename($imageFilename);
     }
+
+    public static function update(Recipe $recipe, array $requestParams, string $imageFilename): Recipe
+    {
+        return $recipe
+            ->setName($requestParams['name'])
+            ->setDescription($requestParams['description'])
+            ->setQuantity($requestParams['quantity'])
+            ->setImageFilename($imageFilename);
+    }
 }
